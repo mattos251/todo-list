@@ -1,23 +1,44 @@
 <template>
     <div>
-        <v-list-item>
-          <template v-slot:default="{ active }">
+        <v-list-item 
+            :class="{'blue lighten-4':tarefas.concluido}"
+            @click="tarefas.concluido = !tarefas.concluido"
+        >
+          <template v-slot:default="{}">
             <v-list-item-action>
-              <v-checkbox :input-value="active"></v-checkbox>
+              <v-checkbox :input-value="tarefas.concluido"></v-checkbox>
             </v-list-item-action>
 
             <v-list-item-content>
-              <v-list-item-title>Notifications</v-list-item-title>
+              <v-list-item-title
+              :class="{'text-decoration-line-through':tarefas.concluido}"
+              >{{tarefas.titulo}}</v-list-item-title>
             </v-list-item-content>
+
+            <v-list-item-action>
+                <v-btn 
+                icon
+                @click.stop="handleRemoveTarefa(tarefas.id)"
+                >
+                    <v-icon color="grey lighten-1">mdi-trash-can</v-icon>
+                </v-btn>
+            </v-list-item-action>
+            
+
           </template>
         </v-list-item>
-        
+    <v-divider></v-divider>
     </div>
 </template>
 
 <script>
 export default {
-    nome: "Tarefa" 
+    props:['tarefas'],
+    methods:{
+        handleRemoveTarefa(id){
+            this.$store.commit('RemoveTarefa', id)
+        }
+    }
 }
 </script>
 
